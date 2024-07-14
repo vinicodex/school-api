@@ -3,8 +3,6 @@ from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
-
 SECRET_KEY = 'django-insecure-do!e=cg8eo1)0-&2!5+4&ozpedb8=#_y2-eouk3v*k_ef^&jte'
 
 DEBUG = True
@@ -27,8 +25,6 @@ INSTALLED_APPS = [
     'src.classes',
     'src.enrollments'
 ]
-
-
 
 
 MIDDLEWARE = [
@@ -96,6 +92,14 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
     ),
+    'DEFAULT_THROTTLE_CLASSES': [
+        'rest_framework.throttling.UserRateThrottle',
+        'rest_framework.throttling.AnonRateThrottle',
+    ],
+    'DEFAULT_THROTTLE_RATES': {
+        'user': '100/hour',
+        'anon': '3/hour',
+    },
 }
 
 SIMPLE_JWT = {
