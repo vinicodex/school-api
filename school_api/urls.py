@@ -12,7 +12,7 @@ router = DefaultRouter()
 
 schema_view = get_schema_view(
     openapi.Info(
-        title="Your API Title",
+        title="EdModTest",
         default_version='v1',
         description="API documentation",
         terms_of_service="https://www.google.com/policies/terms/",
@@ -28,11 +28,12 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    path('api/v1/students/', include('src.students.urls', namespace='students_v1')),
-    path('api/v1/teachers/', include('src.teachers.urls', namespace='teachers_v1')),
-    path('api/v1/classes/', include('src.classes.urls', namespace='classes_v1')),
-    path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
-    path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
+
+    path('api/v1/', include([
+        path('', include('src.students.urls', namespace='students')),
+        path('', include('src.teachers.urls', namespace='teachers')),
+        path('', include('src.classes.urls', namespace='classes')),
+    ])),    path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
 ]
 
 if settings.DEBUG:

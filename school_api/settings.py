@@ -1,16 +1,23 @@
-from datetime import timedelta
+from decouple import config
 from pathlib import Path
+from datetime import timedelta
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'django-insecure-do!e=cg8eo1)0-&2!5+4&ozpedb8=#_y2-eouk3v*k_ef^&jte'
+SECRET_KEY = config('SECRET_KEY', default='django-insecure-do!e=cg8eo1)0-&2!5+4&ozpedb8=#_y2-eouk3v*k_ef^&jte')
 
-DEBUG = True
+DEBUG = config('DEBUG', default=True, cast=bool)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost']
 
+APPLICATION_APPS = [
+    'src.students',
+    'src.teachers',
+    'src.classes',
+    'src.enrollments'
+]
 
-INSTALLED_APPS = [
+DJANGO_INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -20,12 +27,9 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
     'drf_yasg',
-    'src.students',
-    'src.teachers',
-    'src.classes',
-    'src.enrollments'
 ]
 
+INSTALLED_APPS = DJANGO_INSTALLED_APPS + APPLICATION_APPS
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -37,18 +41,17 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-
 if DEBUG:
     INSTALLED_APPS += ['debug_toolbar']
     MIDDLEWARE += ['debug_toolbar.middleware.DebugToolbarMiddleware']
     INTERNAL_IPS = ['127.0.0.1']
-    
+
 ROOT_URLCONF = 'school_api.urls'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -66,7 +69,7 @@ WSGI_APPLICATION = 'school_api.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': BASE_DIR / config('DATABASE_NAME', default='db.sqlite3'),
     }
 }
 
@@ -98,13 +101,13 @@ REST_FRAMEWORK = {
     ],
     'DEFAULT_THROTTLE_RATES': {
         'user': '100/hour',
-        'anon': '3/hour',
+        'anon': '25/hour',
     },
 }
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'ACCESS_TOKEN_LIFETIME': config('ACCESS_TOKEN_LIFETIME'),
+    'REFRESH_TOKEN_LIFETIME': config('REFRESH_TOKEN_LIFETIME'),
     'ROTATE_REFRESH_TOKENS': False,
     'BLACKLIST_AFTER_ROTATION': True,
     'ALGORITHM': 'HS256',
@@ -124,7 +127,6 @@ SWAGGER_SETTINGS = {
     },
 }
 
-
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
@@ -134,6 +136,5 @@ USE_I18N = True
 USE_TZ = True
 
 STATIC_URL = 'static/'
-
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

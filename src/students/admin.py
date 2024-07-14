@@ -3,7 +3,7 @@ from src.students.models import Student
 
 @admin.register(Student)
 class StudentAdmin(admin.ModelAdmin):
-    list_display = ('user', 'birth_date')
+    list_display = ('name', 'birth_date')
     search_fields = ('name',)
     # inlines = [ClassInline, GradeInline]
     list_per_page = 20
