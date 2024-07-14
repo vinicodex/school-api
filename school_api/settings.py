@@ -22,7 +22,8 @@ INSTALLED_APPS = [
     'drf_yasg',
     'src.students',
     'src.teachers',
-    'src.classes'
+    'src.classes',
+    'src.enrollments'
 ]
 
 

@@ -11,20 +11,23 @@ router = DefaultRouter()
 schema_view = get_schema_view(
     openapi.Info(
         title="School API",
-        default_version='v1/v2',
+        default_version='v1',
         description="API documentation",
         terms_of_service="https://www.google.com/policies/terms/",
-        contact=openapi.Contact(email="vinicodex.com"),
+        contact=openapi.Contact(email="marcos@gmail.com"),
     ),
     public=True,
-    permission_classes=(permissions.AllowAny,),
+    permission_classes=[permissions.AllowAny,],
 )
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/v1/', include('src.students.urls', namespace='students')),
-    path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+    path('api/v1/', include([
+        path('students/', include('src.students.urls', namespace='students_v1')),
+        path('teachers/', include('src.teachers.urls', namespace='teachers_v1')),
+        path('classes/', include('src.classes.urls', namespace='classes_v1')),
+    ])),    path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
 ]
 
 if settings.DEBUG:
