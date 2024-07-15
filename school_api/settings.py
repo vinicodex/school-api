@@ -8,7 +8,7 @@ SECRET_KEY = config('SECRET_KEY', default='django-insecure-do!e=cg8eo1)0-&2!5+4&
 
 DEBUG = config('DEBUG', default=True, cast=bool)
 
-ALLOWED_HOSTS = ['localhost']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 APPLICATION_APPS = [
     'src.students',
@@ -17,19 +17,22 @@ APPLICATION_APPS = [
     'src.enrollments'
 ]
 
-DJANGO_INSTALLED_APPS = [
+DJANGO_DEFAULT_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+]
+
+DJANGO_INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
     'drf_yasg',
 ]
 
-INSTALLED_APPS = DJANGO_INSTALLED_APPS + APPLICATION_APPS
+INSTALLED_APPS = DJANGO_INSTALLED_APPS + APPLICATION_APPS + DJANGO_DEFAULT_APPS
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -105,9 +108,12 @@ REST_FRAMEWORK = {
     },
 }
 
+from datetime import timedelta
+from decouple import config
+
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': config('ACCESS_TOKEN_LIFETIME'),
-    'REFRESH_TOKEN_LIFETIME': config('REFRESH_TOKEN_LIFETIME'),
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=config('ACCESS_TOKEN_LIFETIME', default=5, cast=int)),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=config('REFRESH_TOKEN_LIFETIME', default=1, cast=int)),
     'ROTATE_REFRESH_TOKENS': False,
     'BLACKLIST_AFTER_ROTATION': True,
     'ALGORITHM': 'HS256',
@@ -126,6 +132,13 @@ SWAGGER_SETTINGS = {
         }
     },
 }
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'vinicodex@gmail.com'
+EMAIL_HOST_PASSWORD = 'yrekbpehawhwntkh'
 
 LANGUAGE_CODE = 'en-us'
 
