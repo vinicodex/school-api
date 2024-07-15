@@ -1,7 +1,6 @@
 import pytest
 from src.teachers.models import Teacher
 from src.teachers.serializers import TeacherSerializer
-@pytest.mark.skip(reason="Skipping this test because the pipeline is breaking")
 @pytest.mark.django_db
 def test_teacher_serializer_serialization():
     teacher = Teacher.objects.create(name='Jane Smith', is_active=True)
@@ -11,7 +10,6 @@ def test_teacher_serializer_serialization():
 
     assert data['name'] == 'Jane Smith'
 
-@pytest.mark.skip(reason="Skipping this test because the pipeline is breaking")
 @pytest.mark.django_db
 def test_teacher_serializer_deserialization():
     data = {
@@ -26,7 +24,6 @@ def test_teacher_serializer_deserialization():
     assert teacher.name == 'John Doe'
     assert teacher.is_active == True
 
-@pytest.mark.skip(reason="Skipping this test because the pipeline is breaking")
 @pytest.mark.django_db
 def test_teacher_serializer_validation():
     data = {
