@@ -4,9 +4,7 @@ from src.classes.models import Class
 
 class ClassInline(admin.TabularInline):
     model = Class
-    extra = 1
-    show_change_link = True
-
+    extra = 0
 
 @admin.register(Class)
 class ClassAdmin(admin.ModelAdmin):
