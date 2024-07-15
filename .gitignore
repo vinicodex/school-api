@@ -5,6 +5,11 @@ __pycache__/
 
 # C extensions
 *.so
+# Ignore __pycache__ directories
+__pycache__/
+
+# Ignore all .pyc files
+*.pyc
 
 # Distribution / packaging
 .Python
