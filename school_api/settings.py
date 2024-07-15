@@ -1,20 +1,19 @@
 from decouple import config
 from pathlib import Path
 from datetime import timedelta
+import os
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = config('SECRET_KEY', default='django-insecure-do!e=cg8eo1)0-&2!5+4&ozpedb8=#_y2-eouk3v*k_ef^&jte')
-
 DEBUG = config('DEBUG', default=True, cast=bool)
-
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '0.0.0.0']
 
 APPLICATION_APPS = [
     'src.students',
     'src.teachers',
     'src.classes',
-    'src.enrollments'
+    'src.enrollments',
 ]
 
 DJANGO_DEFAULT_APPS = [
@@ -69,16 +68,21 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'school_api.wsgi.application'
 
-
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / "db.sqlite3",
-        'OPTIONS': {
-            'timeout': 20,
-        }
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': config('POSTGRES_DB'),
+        'USER': config('POSTGRES_USER'),
+        'PASSWORD': config('POSTGRES_PASSWORD'),
+        'HOST': config('POSTGRES_HOST', default='db'),
+        'PORT': config('POSTGRES_PORT', default='5432'),
     }
 }
+
+CELERY_BROKER_URL = config('CELERY_BROKER_URL')
+
+STATIC_URL = 'app/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -112,8 +116,6 @@ REST_FRAMEWORK = {
     },
 }
 
-from decouple import config
-
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=config('ACCESS_TOKEN_LIFETIME', default=5, cast=int)),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=config('REFRESH_TOKEN_LIFETIME', default=1, cast=int)),
@@ -143,6 +145,13 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'vinicodex@gmail.com'
 EMAIL_HOST_PASSWORD = 'yrekbpehawhwntkh'
 
+
+RABBITMQ_HOST = config('RABBITMQ_HOST', default='rabbitmq')
+RABBITMQ_PORT = config('RABBITMQ_PORT', default=5672, cast=int)
+RABBITMQ_USER = config('RABBITMQ_USER', default='guest')
+RABBITMQ_PASSWORD = config('RABBITMQ_PASSWORD', default='guest')
+
+
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
@@ -150,7 +159,5 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
-
-STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

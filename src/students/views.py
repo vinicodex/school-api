@@ -1,28 +1,55 @@
-from rest_framework import viewsets
+from rest_framework import viewsets, status
+from rest_framework.decorators import action
 from rest_framework.response import Response
-from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_200_OK
+from django.shortcuts import get_object_or_404
+from .models import Student
+from .serializers import StudentSerializer
 
-from src.students.models import Student
-from src.students.serializers import StudentSerializer
+class StudentViewSet(viewsets.ViewSet):
 
+    def retrieve(self, request, pk=None):
+        student = get_object_or_404(Student, pk=pk)
 
-class StudentViewSet(viewsets.ModelViewSet):
-    queryset = Student.objects.filter(is_active=True)
-    serializer_class = StudentSerializer
+        student_detail = {
+            'id': student.id,
+            'name': student.name,
+            'birth_date': student.birth_date,
+            'is_active': student.is_active,
+            'created_at': student.created_at,
+            'updated_at': student.updated_at,
+            'classes': []
+        }
 
-    def destroy(self, request, *args, **kwargs):
-        student = self.get_object()
+        enrollments = student.enrollment_set.all()
 
-        if not student.is_active:
-            return Response(
-                {"detail": "Cannot delete an inactive student."},
-                status=HTTP_400_BAD_REQUEST
-            )
+        for enroll in enrollments:
+            class_detail = {
+                'id': enroll.class_assigned.id,
+                'class_name': enroll.class_assigned.class_name,
+                'teacher': {
+                    'id': enroll.class_assigned.teacher.id,
+                    'name': enroll.class_assigned.teacher.name,
+                },
+            }
+            student_detail['classes'].append(class_detail)
 
+        return Response(student_detail)
+
+    def destroy(self, request, pk=None):
+        student = get_object_or_404(Student, pk=pk)
         student.is_active = False
         student.save()
+        return Response({'status': 'student set to inactive'})
 
-        return Response(
-            {"detail": "Student has been set to inactive."},
-            status=HTTP_200_OK
+    @action(detail=True, methods=['get'], url_path='detailed')
+    def get_student_v2(self, request, pk=None):
+        student = get_object_or_404(
+            Student.objects.prefetch_related(
+                'enrollment_set__class_assigned__teacher'
+            ),
+            pk=pk
         )
+
+        serializer = StudentSerializer(student)
+        return Response(serializer.data)
+

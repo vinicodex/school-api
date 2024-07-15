@@ -14,3 +14,5 @@ class AttendanceSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError(f'O estudante {student.name} não está matriculado na classe {class_assigned.class_name}.')
 
         return data
+
+
