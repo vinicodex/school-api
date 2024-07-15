@@ -6,4 +6,4 @@ class StudentsConfig(AppConfig):
     name = 'src.students'
 
     def ready(self):
-        import src.students.signals
+        pass

@@ -1,0 +1,8 @@
+[tool.ruff]
+select = ["E", "F", "W"]
+fix = true
+exclude = [
+    "migrations/*",
+    "*/migrations/*",
+    "management/*"
+]

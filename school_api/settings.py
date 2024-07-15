@@ -112,7 +112,6 @@ REST_FRAMEWORK = {
     },
 }
 
-from datetime import timedelta
 from decouple import config
 
 SIMPLE_JWT = {

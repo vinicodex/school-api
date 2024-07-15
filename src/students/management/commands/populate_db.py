@@ -46,7 +46,7 @@ class Command(BaseCommand):
 
         for student in students:
             class_obj = fake.random_element(classes)
-            enrollment = Enrollment.objects.create(
+            Enrollment.objects.create(
                 student=student,
                 class_assigned=class_obj,
                 enrolled_at=timezone.now()
