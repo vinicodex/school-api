@@ -30,7 +30,7 @@ I have created a basic API to showcase some cool features that I have developed 
 
 ## Databases
 
-#### Students (1 - N) -> Enrollments (1 - 1) -> Classes (1 - N) -> Enrollments
+#### Students (1 - N) -> Enrollments (1 - 1) -> Classes (1 - N) -> Attendances
 #### Teachers (1 - N) -> Classes
 
 ![img.png](img.png)
