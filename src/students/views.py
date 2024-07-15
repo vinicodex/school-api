@@ -4,7 +4,10 @@ from django.shortcuts import get_object_or_404
 from .models import Student
 from .serializers import StudentSerializer
 
-class StudentViewSet(viewsets.ViewSet):
+
+class StudentViewSet(viewsets.ModelViewSet):
+
+    queryset = Student.objects.active_students_in_2024()
 
     def retrieve(self, request, pk=None):
         student = get_object_or_404(Student, pk=pk)
@@ -50,4 +53,3 @@ class StudentViewSet(viewsets.ViewSet):
 
         serializer = StudentSerializer(student)
         return Response(serializer.data)
-

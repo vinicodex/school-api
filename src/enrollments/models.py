@@ -10,6 +10,7 @@ class Enrollment(models.Model):
     class_assigned = models.ForeignKey(Class, on_delete=models.CASCADE)
     enrolled_at = models.DateTimeField(auto_now_add=True)
 
+
 class Attendance(models.Model):
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
     class_assigned = models.ForeignKey(Class, on_delete=models.CASCADE)
@@ -21,4 +22,5 @@ class Attendance(models.Model):
 
     def clean(self):
         if not Enrollment.objects.filter(student=self.student, class_assigned=self.class_assigned).exists():
-            raise ValidationError(f'Student {self.student.name} is not enrolled in class {self.class_assigned.class_name}.')
+            raise ValidationError(
+                f'Student {self.student.name} is not enrolled in class {self.class_assigned.class_name}.')

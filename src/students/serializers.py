@@ -10,12 +10,14 @@ class TeacherSerializer(serializers.ModelSerializer):
         model = Teacher
         fields = ['id', 'name']
 
+
 class ClassAssignedSerializer(serializers.ModelSerializer):
     teacher = TeacherSerializer()
 
     class Meta:
         model = Class
         fields = ['id', 'class_name', 'teacher']
+
 
 class StudentSerializer(serializers.ModelSerializer):
     classes = serializers.SerializerMethodField()

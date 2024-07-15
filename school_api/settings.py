@@ -6,7 +6,9 @@ import os
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = config('SECRET_KEY', default='django-insecure-do!e=cg8eo1)0-&2!5+4&ozpedb8=#_y2-eouk3v*k_ef^&jte')
+
 DEBUG = config('DEBUG', default=True, cast=bool)
+
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', '0.0.0.0']
 
 APPLICATION_APPS = [
