@@ -12,6 +12,15 @@ python manage.py migrate
 
 python manage.py collectstatic --noinput
 
-python manage.py shell -c "from django.contrib.auth import get_user_model; User = get_user_model(); User.objects.create_superuser(username='admin', password='admin', email='admin@admin.com') if not User.objects.filter(username='$DJANGO_SUPERUSER_USERNAME').exists() else None"
+python manage.py shell -c "
+from django.contrib.auth import get_user_model;
+User = get_user_model();
+username = 'admin';
+password = 'admin';
+email = 'admin@admin.com';
+if not User.objects.filter(username=username).exists():
+    User.objects.create_superuser(username=username, password=password, email=email)
+else:
+    print('Superuser already exists.')"
 
 exec "$@"

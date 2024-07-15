@@ -41,7 +41,7 @@ class StudentViewSet(viewsets.ViewSet):
         student.save()
         return Response({'status': 'student set to inactive'})
 
-    @action(detail=True, methods=['get'], url_path='detailed')
+    """@action(detail=True, methods=['get'], url_path='detailed')
     def get_student_v2(self, request, pk=None):
         student = get_object_or_404(
             Student.objects.prefetch_related(
@@ -51,5 +51,5 @@ class StudentViewSet(viewsets.ViewSet):
         )
 
         serializer = StudentSerializer(student)
-        return Response(serializer.data)
+        return Response(serializer.data)"""
 

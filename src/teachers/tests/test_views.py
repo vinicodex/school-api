@@ -1,26 +1,6 @@
 import pytest
 from rest_framework import status
-from rest_framework.test import APIClient
-from django.contrib.auth.models import User
-from rest_framework_simplejwt.tokens import RefreshToken
 from src.teachers.models import Teacher
-
-@pytest.fixture
-def api_client():
-    return APIClient()
-
-@pytest.fixture
-def create_user():
-    user = User.objects.create_user(username='testuser', password='testpassword')
-    user.is_staff = True
-    user.save()
-    return user
-
-@pytest.fixture
-def bearer_token(create_user):
-    refresh = RefreshToken.for_user(create_user)
-    return str(refresh.access_token)
-
 @pytest.mark.django_db
 def test_create_teacher(api_client, bearer_token):
     url = '/api/v1/teachers/'

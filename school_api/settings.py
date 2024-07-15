@@ -68,16 +68,26 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'school_api.wsgi.application'
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': config('POSTGRES_DB'),
-        'USER': config('POSTGRES_USER'),
-        'PASSWORD': config('POSTGRES_PASSWORD'),
-        'HOST': config('POSTGRES_HOST', default='db'),
-        'PORT': config('POSTGRES_PORT', default='5432'),
+IS_TEST_ENV = config('DJANGO_TEST_ENV', default=False, cast=bool)
+
+if IS_TEST_ENV:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': config('POSTGRES_DB', default='mydatabase'),
+            'USER': config('POSTGRES_USER', default='myuser'),
+            'PASSWORD': config('POSTGRES_PASSWORD', default='mypassword'),
+            'HOST': config('POSTGRES_HOST', default='db'),
+            'PORT': config('POSTGRES_PORT', default=5432, cast=int),
+        }
+    }
 
 CELERY_BROKER_URL = config('CELERY_BROKER_URL')
 
