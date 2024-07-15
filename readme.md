@@ -104,8 +104,9 @@ user: guest
 password: guest
 
 
-### Semantig Commits Flag
+### Semantic Commits Flag
 
 feat: for new features
 test: when increasing or fixing testing coverage
 fix: for fixing issues or mismatching characters
+doc: for document related issues or features
