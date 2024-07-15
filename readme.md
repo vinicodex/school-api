@@ -16,7 +16,6 @@ I have created a basic API to showcase some cool features that I have developed 
 - RabbitMQ queue to handle user creation
 - Django Commands to populate database and call consumers
 - Pytest
-- 
 - Read CSV Files from commands
 - Linter and Code Quality with Ruff
 - Docker and Docker Compose Features
