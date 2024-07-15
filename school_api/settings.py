@@ -89,7 +89,7 @@ else:
         }
     }
 
-CELERY_BROKER_URL = config('CELERY_BROKER_URL')
+CELERY_BROKER_URL = 'amqp://guest@rabbitmq//'
 
 STATIC_URL = 'app/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
